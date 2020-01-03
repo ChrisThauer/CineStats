@@ -1,8 +1,9 @@
 import React from 'react';
+import { Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 
 import Header from './header/header';
-import MovieList from './movie-list/movie-list';
+import MoviesPage from '../pages/movies-page/movies-page';
 
 import './App.css';
 
@@ -16,7 +17,6 @@ class App extends React.Component {
   componentDidMount() {
     axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&region=us`)
     .then(res => {
-      console.log(res.data.results);
       this.setState({ movies: res.data.results});
     })
   }
@@ -25,7 +25,12 @@ class App extends React.Component {
     return (
       <div className="App">
         <Header />
-        <MovieList movies={this.state.movies} listType="Now Playing" />
+        <Switch>
+          <Route path="/" exact />
+          <Route path="/movies">
+            <MoviesPage movies={this.state.movies} />
+          </Route>
+        </Switch>
       </div>
     );
   }
